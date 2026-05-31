@@ -59,21 +59,21 @@ EDITORIAL_CSS = """
 
   /* Block container: editorial reading width */
   .main .block-container {
-    padding-top: 3rem;
+    padding-top: 2.2rem;
     padding-bottom: 4rem;
-    max-width: 1100px;
+    max-width: 1080px;
   }
 
   /* Display typography */
   h1, .stMarkdown h1 {
     font-family: 'Fraunces', Georgia, serif !important;
     font-weight: 600 !important;
-    font-size: 3.4rem !important;
+    font-size: 2.6rem !important;
     line-height: 1.05 !important;
     letter-spacing: -0.025em;
     font-variation-settings: "opsz" 144;
     color: var(--text-primary) !important;
-    margin-bottom: 0.6rem !important;
+    margin-bottom: 0.5rem !important;
   }
   h2, .stMarkdown h2 {
     font-family: 'Fraunces', Georgia, serif !important;
@@ -89,49 +89,34 @@ EDITORIAL_CSS = """
 
   /* Hero block */
   .pp-hero {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.4rem;
     border-bottom: 1px solid var(--border-soft);
   }
-  .pp-hero .pp-eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent-warm);
-    margin-bottom: 0.8rem;
-  }
   .pp-hero .pp-tagline {
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.15rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
     line-height: 1.55;
     color: var(--text-secondary);
-    max-width: 560px;
-    font-style: italic;
+    max-width: 620px;
     font-weight: 400;
+    margin-top: 0.3rem;
   }
-  /* Drop cap on the tagline */
-  .pp-hero .pp-tagline::first-letter {
+  .pp-hero .pp-tagline em {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 2.6rem;
-    font-weight: 600;
-    line-height: 0.9;
-    float: left;
-    margin-right: 0.4rem;
-    margin-top: 0.15rem;
+    font-style: italic;
     color: var(--accent-warm);
-    font-style: normal;
+    font-weight: 500;
   }
 
   /* Tabs: text-only with a hand-feeling underline on active */
-  .stTabs { margin-top: 0.5rem; }
+  .stTabs { margin-top: 0; }
   .stTabs [data-baseweb="tab-list"] {
-    gap: 2.2rem;
+    gap: 2rem;
     background: transparent !important;
-    border-bottom: none !important;
-    padding-bottom: 0.6rem;
-    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-soft) !important;
+    padding-bottom: 0.55rem;
+    margin-bottom: 1.6rem;
   }
   .stTabs [data-baseweb="tab-list"]::after { display: none; }
   .stTabs [data-baseweb="tab-highlight"],
@@ -482,12 +467,10 @@ with st.sidebar:
 st.markdown(
     """
     <div class="pp-hero">
-      <div class="pp-eyebrow">paperpal</div>
       <h1>read between the lines.</h1>
       <p class="pp-tagline">
-        Upload a paper, a report, a contract — anything with text. Ask questions in plain
-        English and get answers drawn directly from the page, with the exact passages shown
-        as proof.
+        Upload a paper, report, or contract. Ask anything in plain English and get
+        answers drawn straight from the page, <em>with the exact passages shown as proof.</em>
       </p>
     </div>
     """,
