@@ -13,7 +13,7 @@ short_description: RAG + agentic AI over uploaded documents
 # Document Intelligence Assistant
 
 Production-quality RAG + agentic AI application. Upload PDFs, DOCX, or TXT files
-and ask natural-language questions about them. A LangGraph agent picks the right
+and ask natural-language questions about them. A LangGraph agent picks up the right
 tool (search, summarize, extract topics, compare, action items, QA) for each
 request, and answers are grounded in the source documents with inline citations.
 
