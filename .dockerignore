@@ -1,0 +1,14 @@
+__pycache__
+*.pyc
+.venv
+venv
+.env
+.git
+.github
+.pytest_cache
+.ruff_cache
+data/uploads/*
+data/chroma/*
+data/app.db
+tests
+README.md
