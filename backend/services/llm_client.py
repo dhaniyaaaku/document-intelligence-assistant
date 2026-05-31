@@ -12,7 +12,8 @@ from backend.utils.logging import get_logger
 log = get_logger(__name__)
 
 # Tried in order. When the primary hits a per-day quota, we fall back.
-_FALLBACK_MODELS = ["gemini-1.5-flash", "gemini-1.5-flash-8b"]
+# All entries must be currently-supported model IDs on the Generative Language API.
+_FALLBACK_MODELS = ["gemini-2.0-flash-lite", "gemini-2.5-flash"]
 
 
 class LLMNotConfiguredError(RuntimeError):
