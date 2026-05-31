@@ -1,10 +1,10 @@
 # Default theme. Users can toggle Light/Dark from the hamburger menu (Settings).
 [theme]
 base = "dark"
-primaryColor = "#C7B8EA"
-backgroundColor = "#1A1B26"
-secondaryBackgroundColor = "#24263A"
-textColor = "#E8E8F0"
+primaryColor = "#E8B7A8"
+backgroundColor = "#1B1A1F"
+secondaryBackgroundColor = "#232229"
+textColor = "#EFE9E2"
 font = "sans serif"
 
 [server]

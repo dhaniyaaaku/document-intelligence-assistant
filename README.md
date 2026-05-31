@@ -1,8 +1,8 @@
 ---
-title: Document Intelligence Assistant
-emoji: 📄
-colorFrom: indigo
-colorTo: purple
+title: PaperPal
+emoji: 📖
+colorFrom: pink
+colorTo: yellow
 sdk: docker
 app_port: 7860
 pinned: false
