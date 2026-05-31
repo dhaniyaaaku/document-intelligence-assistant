@@ -11,7 +11,7 @@ from backend.models.schemas import (
     TopicsResponse,
 )
 from backend.services import analysis_service
-from backend.services.llm_client import LLMNotConfiguredError
+from backend.services.llm_client import LLMNotConfiguredError, LLMQuotaExceededError
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -23,6 +23,8 @@ def _wrap(fn, *args, **kwargs):
         raise HTTPException(status_code=404, detail=str(e)) from e
     except LLMNotConfiguredError as e:
         raise HTTPException(status_code=503, detail=str(e)) from e
+    except LLMQuotaExceededError as e:
+        raise HTTPException(status_code=429, detail=str(e)) from e
 
 
 @router.post("/summarize", response_model=SummarizeResponse)

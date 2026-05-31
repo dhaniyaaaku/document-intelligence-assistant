@@ -19,10 +19,20 @@ def api_get(path: str, **kwargs) -> Any:
     return r.json()
 
 
+class QuotaExceeded(Exception):
+    pass
+
+
 def api_post(path: str, json: dict | None = None, files: dict | None = None) -> Any:
     r = requests.post(
         f"{BACKEND_URL}{path}", json=json, files=files, timeout=REQUEST_TIMEOUT
     )
+    if r.status_code == 429:
+        try:
+            detail = r.json().get("detail", "Daily quota exceeded.")
+        except ValueError:
+            detail = "Daily quota exceeded."
+        raise QuotaExceeded(detail)
     r.raise_for_status()
     return r.json()
 
@@ -143,6 +153,13 @@ with tab_chat:
                         "agent_trace": resp.get("agent_trace", []),
                     }
                 )
+            except QuotaExceeded as e:
+                st.session_state.history.append(
+                    {
+                        "role": "assistant",
+                        "content": f"⚠️ {e}\n\nThe Gemini free tier resets at midnight Pacific Time.",
+                    }
+                )
             except requests.RequestException as e:
                 st.session_state.history.append(
                     {"role": "assistant", "content": f"Error: {e}"}
@@ -169,6 +186,8 @@ with tab_summary:
                         "/analysis/summarize", json={"document_id": choice["id"]}
                     )
                     st.markdown(resp["summary"])
+                except QuotaExceeded as e:
+                    st.warning(f"⚠️ {e}")
                 except requests.RequestException as e:
                     st.error(str(e))
 
@@ -193,6 +212,8 @@ with tab_compare:
                             json={"document_id_a": a["id"], "document_id_b": b["id"]},
                         )
                         st.markdown(resp["comparison"])
+                    except QuotaExceeded as e:
+                        st.warning(f"⚠️ {e}")
                     except requests.RequestException as e:
                         st.error(str(e))
 
@@ -219,6 +240,8 @@ with tab_insights:
                     )
                     for t in resp["topics"]:
                         st.markdown(f"- {t}")
+                except QuotaExceeded as e:
+                    st.warning(f"⚠️ {e}")
                 except requests.RequestException as e:
                     st.error(str(e))
         if col_a.button("Action items"):
@@ -232,5 +255,7 @@ with tab_insights:
                         st.info("No action items found.")
                     for t in items:
                         st.markdown(f"- {t}")
+                except QuotaExceeded as e:
+                    st.warning(f"⚠️ {e}")
                 except requests.RequestException as e:
                     st.error(str(e))

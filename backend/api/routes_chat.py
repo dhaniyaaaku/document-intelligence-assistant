@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from backend.agents.graph import run_agent
 from backend.models.schemas import ChatRequest, ChatResponse
 from backend.services import chat_service
-from backend.services.llm_client import LLMNotConfiguredError
+from backend.services.llm_client import LLMNotConfiguredError, LLMQuotaExceededError
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
@@ -16,6 +16,8 @@ def chat(req: ChatRequest) -> ChatResponse:
         )
     except LLMNotConfiguredError as e:
         raise HTTPException(status_code=503, detail=str(e)) from e
+    except LLMQuotaExceededError as e:
+        raise HTTPException(status_code=429, detail=str(e)) from e
 
 
 @router.post("/agent", response_model=ChatResponse)
@@ -24,3 +26,5 @@ def chat_agent(req: ChatRequest) -> ChatResponse:
         return run_agent(req.question, history=req.history)
     except LLMNotConfiguredError as e:
         raise HTTPException(status_code=503, detail=str(e)) from e
+    except LLMQuotaExceededError as e:
+        raise HTTPException(status_code=429, detail=str(e)) from e

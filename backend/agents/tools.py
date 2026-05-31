@@ -35,10 +35,16 @@ def search_documents(query: str) -> str:
 
 @tool
 def answer_question(question: str) -> str:
-    """Answer a question using retrieval-augmented generation across all documents.
-    Use this for factual questions about document contents."""
-    resp = chat_service.answer_question(question)
-    return resp.answer
+    """Retrieve grounded context for a factual question about the uploaded documents.
+    Use this for any factual question. Returns the relevant passages — you (the agent)
+    should then synthesize the final answer from these passages, citing [Source N]."""
+    hits = chat_service.retrieve(question)
+    if not hits:
+        return "No relevant passages found in the uploaded documents."
+    return "\n\n".join(
+        f"[Source {i + 1}] {h.filename} (chunk {h.chunk_index})\n{h.text}"
+        for i, h in enumerate(hits)
+    )
 
 
 @tool
