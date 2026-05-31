@@ -1,0 +1,20 @@
+# Default theme. Users can toggle Light/Dark from the hamburger menu (Settings).
+[theme]
+base = "dark"
+primaryColor = "#C7B8EA"
+backgroundColor = "#1A1B26"
+secondaryBackgroundColor = "#24263A"
+textColor = "#E8E8F0"
+font = "sans serif"
+
+[server]
+headless = true
+runOnSave = false
+enableCORS = false
+enableXsrfProtection = false
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

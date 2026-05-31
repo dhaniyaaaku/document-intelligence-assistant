@@ -20,6 +20,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY backend ./backend
 COPY frontend ./frontend
+COPY .streamlit ./.streamlit
 COPY docker/supervisord.conf /etc/supervisor/conf.d/app.conf
 
 # HF Spaces gives the container a writable /data only on paid plans; on free

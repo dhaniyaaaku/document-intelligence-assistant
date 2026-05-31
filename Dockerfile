@@ -22,6 +22,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY backend ./backend
 COPY frontend ./frontend
+COPY .streamlit ./.streamlit
 COPY docker/supervisord.conf /etc/supervisor/conf.d/app.conf
 
 ENV UPLOAD_DIR=/tmp/data/uploads \
