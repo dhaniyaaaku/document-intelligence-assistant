@@ -4,7 +4,6 @@ emoji: 📄
 colorFrom: indigo
 colorTo: purple
 sdk: docker
-dockerfile: docker/spaces.Dockerfile
 app_port: 7860
 pinned: false
 license: mit
