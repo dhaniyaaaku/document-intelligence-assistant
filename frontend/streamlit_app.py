@@ -11,7 +11,6 @@ REQUEST_TIMEOUT = 120
 
 st.set_page_config(
     page_title="Document Intelligence",
-    page_icon="📄",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -19,28 +18,22 @@ st.set_page_config(
 # ----------------------- Pastel theme CSS -----------------------
 PASTEL_CSS = """
 <style>
-  /* Hide Streamlit chrome */
   #MainMenu {visibility: hidden;}
   footer {visibility: hidden;}
   header[data-testid="stHeader"] {background: transparent;}
 
-  /* Pastel palette (works in both light & dark mode) */
   :root {
     --pastel-lavender: #C7B8EA;
     --pastel-pink: #F4C2C2;
     --pastel-mint: #B5EAD7;
-    --pastel-peach: #FFD8B1;
-    --pastel-sky: #C7E9F1;
   }
 
-  /* App background — soft gradient */
   .stApp {
     background:
       radial-gradient(at 0% 0%, rgba(199, 184, 234, 0.10) 0px, transparent 50%),
       radial-gradient(at 100% 100%, rgba(181, 234, 215, 0.08) 0px, transparent 50%);
   }
 
-  /* Title */
   h1 {
     font-weight: 700 !important;
     letter-spacing: -0.02em;
@@ -50,7 +43,6 @@ PASTEL_CSS = """
     background-clip: text;
   }
 
-  /* Tabs — pill style */
   .stTabs [data-baseweb="tab-list"] {
     gap: 6px;
     background: transparent;
@@ -71,7 +63,6 @@ PASTEL_CSS = """
     border-color: var(--pastel-lavender) !important;
   }
 
-  /* Buttons */
   .stButton > button {
     border-radius: 10px;
     border: 1px solid rgba(199, 184, 234, 0.3);
@@ -85,7 +76,6 @@ PASTEL_CSS = """
     transform: translateY(-1px);
   }
 
-  /* Sidebar */
   section[data-testid="stSidebar"] {
     background: rgba(199, 184, 234, 0.04);
     border-right: 1px solid rgba(199, 184, 234, 0.12);
@@ -97,14 +87,12 @@ PASTEL_CSS = """
     background: none !important;
   }
 
-  /* File uploader */
   [data-testid="stFileUploader"] section {
     background: rgba(199, 184, 234, 0.06);
     border: 1px dashed rgba(199, 184, 234, 0.4);
     border-radius: 12px;
   }
 
-  /* Chat bubbles */
   [data-testid="stChatMessage"] {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(199, 184, 234, 0.12);
@@ -113,32 +101,27 @@ PASTEL_CSS = """
     margin-bottom: 12px;
   }
 
-  /* Chat input */
   [data-testid="stChatInput"] {
     border-radius: 14px;
     border: 1px solid rgba(199, 184, 234, 0.25);
   }
 
-  /* Containers (document cards) */
   [data-testid="stVerticalBlockBorderWrapper"] {
     border-radius: 12px;
     border-color: rgba(199, 184, 234, 0.15) !important;
   }
 
-  /* Expanders (source citations) */
   [data-testid="stExpander"] {
     border-radius: 10px;
     border: 1px solid rgba(181, 234, 215, 0.18);
     background: rgba(181, 234, 215, 0.04);
   }
 
-  /* Code blocks (source snippets) */
   [data-testid="stCodeBlock"] {
     background: rgba(199, 184, 234, 0.05) !important;
     border-radius: 8px;
   }
 
-  /* Tool-used caption */
   .tool-badge {
     display: inline-block;
     padding: 2px 10px;
@@ -150,7 +133,6 @@ PASTEL_CSS = """
     margin-top: 4px;
   }
 
-  /* Info / warning boxes */
   [data-testid="stAlert"] {
     border-radius: 12px;
     border: 1px solid rgba(199, 184, 234, 0.2);
@@ -207,14 +189,14 @@ if "use_agent" not in st.session_state:
 
 # ----------------------- Sidebar -----------------------
 with st.sidebar:
-    st.markdown("### 📁 Documents")
+    st.markdown("### Documents")
     uploaded = st.file_uploader(
         "Drop files here",
         type=["pdf", "docx", "txt"],
         accept_multiple_files=True,
         label_visibility="collapsed",
     )
-    if uploaded and st.button("✨ Index uploads", use_container_width=True, type="primary"):
+    if uploaded and st.button("Index uploads", use_container_width=True, type="primary"):
         progress = st.progress(0, text="Starting…")
         for i, f in enumerate(uploaded, start=1):
             progress.progress((i - 1) / len(uploaded), text=f"Indexing {f.name}…")
@@ -223,15 +205,15 @@ with st.sidebar:
                     "/documents/upload",
                     files={"file": (f.name, f.getvalue(), f.type)},
                 )
-                st.toast(f"Indexed {resp['document']['filename']}", icon="✅")
+                st.toast(f"Indexed {resp['document']['filename']}")
             except requests.RequestException as e:
-                st.toast(f"{f.name}: {e}", icon="❌")
+                st.toast(f"{f.name}: {e}")
         progress.progress(1.0, text="Done")
         progress.empty()
         st.rerun()
 
     st.markdown("---")
-    st.markdown("### 📚 Library")
+    st.markdown("### Library")
     docs = fetch_documents()
     if not docs:
         st.caption("No documents yet.")
@@ -241,23 +223,23 @@ with st.sidebar:
             st.caption(
                 f"{d['chunk_count']} chunks · {d['size_bytes'] // 1024} KB"
             )
-            if st.button("🗑 Delete", key=f"del-{d['id']}", use_container_width=True):
+            if st.button("Delete", key=f"del-{d['id']}", use_container_width=True):
                 try:
                     api_delete(f"/documents/{d['id']}")
-                    st.toast("Deleted", icon="🗑")
+                    st.toast("Deleted")
                     st.rerun()
                 except requests.RequestException as e:
                     st.error(str(e))
 
     st.markdown("---")
-    st.toggle("🤖 Use agent (LangGraph)", key="use_agent")
-    if st.button("🧹 Clear chat", use_container_width=True):
+    st.toggle("Use agent (LangGraph)", key="use_agent")
+    if st.button("Clear chat", use_container_width=True):
         st.session_state.history = []
         st.rerun()
 
     st.markdown("---")
     st.caption(
-        "Built with FastAPI, LangGraph, ChromaDB & Gemini · "
+        "Built with FastAPI, LangGraph, ChromaDB and Gemini · "
         "[GitHub](https://github.com/dhaniyaaaku/document-intelligence-assistant)"
     )
 
@@ -268,7 +250,7 @@ st.markdown(
     <div style="margin-bottom: 8px;">
       <h1 style="margin-bottom: 0;">Document Intelligence</h1>
       <p style="color: rgba(232, 232, 240, 0.6); margin-top: 4px; font-size: 1.05rem;">
-        Upload documents · ask anything · get grounded answers with sources.
+        Upload documents, ask anything, get grounded answers with sources.
       </p>
     </div>
     """,
@@ -276,7 +258,7 @@ st.markdown(
 )
 
 tab_chat, tab_summary, tab_compare, tab_insights = st.tabs(
-    ["💬 Chat", "📝 Summary", "⚖️ Comparison", "💡 Key Insights"]
+    ["Chat", "Summary", "Comparison", "Key Insights"]
 )
 
 
@@ -293,10 +275,11 @@ with tab_chat:
               text-align: center;
               margin: 24px 0;
             ">
-              <div style="font-size: 2.4rem; margin-bottom: 8px;">💭</div>
-              <div style="font-weight: 600; margin-bottom: 4px;">Ask anything about your documents</div>
+              <div style="font-weight: 600; margin-bottom: 4px; font-size: 1.1rem;">
+                Ask anything about your documents
+              </div>
               <div style="color: rgba(232, 232, 240, 0.55); font-size: 0.92rem;">
-                Try: <em>"summarize this"</em> · <em>"what are the action items?"</em> · <em>"compare doc A vs doc B"</em>
+                Try: <em>"summarize this"</em> &nbsp;·&nbsp; <em>"what are the action items?"</em> &nbsp;·&nbsp; <em>"compare doc A vs doc B"</em>
               </div>
             </div>
             """,
@@ -304,17 +287,16 @@ with tab_chat:
         )
 
     for msg in st.session_state.history:
-        avatar = "🧑" if msg["role"] == "user" else "🤖"
-        with st.chat_message(msg["role"], avatar=avatar):
+        with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg.get("tool_used"):
                 st.markdown(
-                    f'<span class="tool-badge">🔧 {msg["tool_used"]}</span>',
+                    f'<span class="tool-badge">tool: {msg["tool_used"]}</span>',
                     unsafe_allow_html=True,
                 )
             sources = msg.get("sources") or []
             if sources:
-                with st.expander(f"📎 Sources ({len(sources)})"):
+                with st.expander(f"Sources ({len(sources)})"):
                     for i, s in enumerate(sources, start=1):
                         st.markdown(
                             f"**[{i}] {s['filename']}** · chunk {s['chunk_index']}"
@@ -324,7 +306,7 @@ with tab_chat:
                         st.code(snippet, language=None)
             trace = msg.get("agent_trace") or []
             if trace:
-                with st.expander("🧠 Agent trace"):
+                with st.expander("Agent trace"):
                     for step in trace:
                         st.json(step)
 
@@ -355,7 +337,7 @@ with tab_chat:
                 st.session_state.history.append(
                     {
                         "role": "assistant",
-                        "content": f"⚠️ {e}\n\nThe Gemini free tier resets at midnight Pacific Time.",
+                        "content": f"{e}\n\nThe Gemini free tier resets at midnight Pacific Time.",
                     }
                 )
             except requests.RequestException as e:
@@ -377,7 +359,7 @@ with tab_summary:
             format_func=lambda d: d["filename"],
             key="summary-pick",
         )
-        if st.button("✨ Generate summary", type="primary"):
+        if st.button("Generate summary", type="primary"):
             with st.spinner("Summarizing…"):
                 try:
                     resp = api_post(
@@ -385,7 +367,7 @@ with tab_summary:
                     )
                     st.markdown(resp["summary"])
                 except QuotaExceeded as e:
-                    st.warning(f"⚠️ {e}")
+                    st.warning(str(e))
                 except requests.RequestException as e:
                     st.error(str(e))
 
@@ -399,7 +381,7 @@ with tab_compare:
         col1, col2 = st.columns(2)
         a = col1.selectbox("Document A", docs, format_func=lambda d: d["filename"], key="cmp-a")
         b = col2.selectbox("Document B", docs, format_func=lambda d: d["filename"], key="cmp-b")
-        if st.button("⚖️ Compare", type="primary"):
+        if st.button("Compare", type="primary"):
             if a["id"] == b["id"]:
                 st.warning("Pick two different documents.")
             else:
@@ -411,7 +393,7 @@ with tab_compare:
                         )
                         st.markdown(resp["comparison"])
                     except QuotaExceeded as e:
-                        st.warning(f"⚠️ {e}")
+                        st.warning(str(e))
                     except requests.RequestException as e:
                         st.error(str(e))
 
@@ -429,7 +411,7 @@ with tab_insights:
             key="insights-pick",
         )
         col_t, col_a = st.columns(2)
-        if col_t.button("🏷 Extract topics", use_container_width=True):
+        if col_t.button("Extract topics", use_container_width=True):
             with st.spinner("Extracting topics…"):
                 try:
                     resp = api_post(
@@ -440,10 +422,10 @@ with tab_insights:
                     for t in resp["topics"]:
                         st.markdown(f"- {t}")
                 except QuotaExceeded as e:
-                    st.warning(f"⚠️ {e}")
+                    st.warning(str(e))
                 except requests.RequestException as e:
                     st.error(str(e))
-        if col_a.button("✅ Action items", use_container_width=True):
+        if col_a.button("Action items", use_container_width=True):
             with st.spinner("Extracting action items…"):
                 try:
                     resp = api_post(
@@ -457,6 +439,6 @@ with tab_insights:
                         for t in items:
                             st.markdown(f"- {t}")
                 except QuotaExceeded as e:
-                    st.warning(f"⚠️ {e}")
+                    st.warning(str(e))
                 except requests.RequestException as e:
                     st.error(str(e))
