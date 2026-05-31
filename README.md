@@ -1,3 +1,15 @@
+---
+title: Document Intelligence Assistant
+emoji: 📄
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+dockerfile: docker/spaces.Dockerfile
+app_port: 7860
+pinned: false
+license: mit
+---
+
 # Document Intelligence Assistant
 
 Production-quality RAG + agentic AI application. Upload PDFs, DOCX, or TXT files
