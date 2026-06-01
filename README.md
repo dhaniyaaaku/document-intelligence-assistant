@@ -1,16 +1,6 @@
----
-title: PaperPal
-emoji: 📖
-colorFrom: pink
-colorTo: yellow
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
-short_description: RAG + agentic AI over uploaded documents
----
 
-# Document Intelligence Assistant
+
+# PaperPal - Document Intelligence Assistant
 
 Production-quality RAG + agentic AI application. Upload PDFs, DOCX, or TXT files
 and ask natural-language questions about them. A LangGraph agent picks up the right
