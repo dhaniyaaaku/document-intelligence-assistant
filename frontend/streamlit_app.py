@@ -239,11 +239,15 @@ EDITORIAL_CSS = """
     background: var(--bg-elevated);
   }
 
-  /* Containers (document cards) */
+  /* Containers (document cards, empty states) */
   [data-testid="stVerticalBlockBorderWrapper"] {
     border-radius: 10px;
     border: 1px solid var(--border-soft) !important;
     background: var(--bg-card);
+    padding: 1rem 1.2rem !important;
+  }
+  [data-testid="stVerticalBlockBorderWrapper"] > div {
+    padding: 0 !important;
   }
 
   /* Expanders */
@@ -470,7 +474,7 @@ st.markdown(
       <h1>read between the lines.</h1>
       <p class="pp-tagline">
         Upload a paper, report, or contract. Ask anything in plain English and get
-        answers drawn straight from the page, <em>with the exact passages shown as proof.</em>
+        answers drawn straight from the page.
       </p>
     </div>
     """,
